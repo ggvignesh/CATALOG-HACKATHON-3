@@ -1,0 +1,49 @@
+class AuctionItem:
+    def __init__(self, item_name, starting_bid):
+        self.item_name = item_name
+        self.current_bid = starting_bid
+        self.highest_bidder = None
+
+    def place_bid(self, bidder_name, bid_amount):
+        if bid_amount > self.current_bid:
+            self.current_bid = bid_amount
+            self.highest_bidder = bidder_name
+            print(f"Bid accepted! {bidder_name} is now the highest bidder with ${self.current_bid}.")
+        else:
+            print("Bid rejected. Your bid must be higher than the current highest bid.")
+
+    def get_winner(self):
+        if self.highest_bidder:
+            return f"The auction winner is {self.highest_bidder} with a bid of ${self.current_bid}."
+        else:
+            return "No bids were placed."
+
+
+class AuctionSystem:
+    def __init__(self):
+        self.items = {}
+
+    def add_item(self, item_name, starting_bid):
+        self.items[item_name] = AuctionItem(item_name, starting_bid)
+        print(f"Item '{item_name}' added to the auction with a starting bid of ${starting_bid}.")
+
+    def place_bid(self, item_name, bidder_name, bid_amount):
+        if item_name in self.items:
+            self.items[item_name].place_bid(bidder_name, bid_amount)
+        else:
+            print(f"Item '{item_name}' not found in the auction.")
+
+    def conclude_auction(self, item_name):
+        if item_name in self.items:
+            print(self.items[item_name].get_winner())
+        else:
+            print(f"Item '{item_name}' not found in the auction.")
+
+
+# Example usage
+auction = AuctionSystem()
+auction.add_item("Laptop", 500)
+auction.place_bid("Laptop", "Alice", 600)
+auction.place_bid("Laptop", "Bob", 650)
+auction.place_bid("Laptop", "Charlie", 640)
+auction.conclude_auction("Laptop")
